@@ -9,6 +9,9 @@
             <data>
                 <field name="partner_id" position="after">
                     <field name="state_id" invisible="1"/>                                      
+                </field>
+                <field name="product_qty" position="before">
+                    <field name="cost_price_db"/>                                      
                 </field>                    
             </data>                
         </field>

@@ -27,7 +27,7 @@
     'description' : "",
     'website': 'http://www.codeback.es',
     'images': [],
-    'depends': ['base', 'account'],
+    'depends': ['base', 'account', 'cbk_product_cost_incl_bom'],
     'category': 'Account',
     'sequence': 26,
     'demo': [],

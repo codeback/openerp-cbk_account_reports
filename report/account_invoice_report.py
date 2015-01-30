@@ -27,17 +27,22 @@ class account_invoice_report(osv.osv):
     _inherit = "account.invoice.report"    
     
     _columns = {        
-        'state_id': fields.many2one('res.country.state','Provincia', readonly=True)        
+        'state_id': fields.many2one('res.country.state','Provincia', readonly=True),
+        'cost_price_db': fields.float(string='Cost Price stored',
+                                      digits_compute = dp.get_precision('Sale Price'))
     }
     
     def _from(self):
       return super(account_invoice_report, self)._from() + " LEFT JOIN res_partner pa ON pa.id = ai.partner_id"
 
     def _select(self):
-        return  super(account_invoice_report, self)._select() + ", sub.state_id as state_id"
+        return  super(account_invoice_report, self)._select() + ", sub.state_id as state_id, sub.cost_price_db as cost_price_db"
 
     def _sub_select(self):
-        return  super(account_invoice_report, self)._sub_select() + ", pa.state_id as state_id"
+        return  super(account_invoice_report, self)._sub_select() + """
+            , pa.state_id as state_id
+            , SUM(pr.cost_price_db * ail.quantity / u.factor) as cost_price_db
+            """
 
     def _group_by(self):
-        return super(account_invoice_report, self)._group_by() + ", pa.state_id"
+        return super(account_invoice_report, self)._group_by() + ", pa.state_id, pr.cost_price_db"
